@@ -1,0 +1,6 @@
+.vagrant
+ipkg
+*.tar.gz
+
+opencv-3.1.0
+
