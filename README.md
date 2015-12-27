@@ -1,5 +1,5 @@
-OpenCV build for RoboRIO
-========================
+OpenCV 3.1.0 build for RoboRIO
+==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
 
