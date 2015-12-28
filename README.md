@@ -26,11 +26,11 @@ packages using the following commands (requires internet access).
 
 For Python2:
 
-    opkg install python27-opencv
+    opkg install python27-opencv3
     
 For Python3:
 
-    opkg install python35-opencv
+    opkg install python35-opencv3
 
 For C++:
 
