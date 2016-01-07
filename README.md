@@ -43,7 +43,14 @@ For Java:
 Offline Installation
 --------------------
 
-TODO: The RobotPy installer should be able to do this in the near future
+You can use the [RobotPy Installer Script](https://github.com/robotpy/robotpy-wpilib/blob/master/installer/installer.py)
+to do offline opkg installs. First, download the package:
+
+    python3 installer.py download-opkg opencv3
+    
+Then, connect to the network with the RoboRIO, and install it:
+
+    python3 installer.py install-opkg opencv3
 
 Manual Installation
 -------------------
