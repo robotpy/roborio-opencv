@@ -69,6 +69,7 @@ Using the C++ and Java bindings
 Download the [latest release](https://github.com/robotpy/roborio-vm/releases)
 and point your compiler at the right bits in the included files.
 
+* For C++ users, [Team 2053 has provided instructions](https://github.com/team2053tigertronics/opencvInstall) that may be useful
 * TODO: document this, create a better release package
 
 Using the Python bindings
