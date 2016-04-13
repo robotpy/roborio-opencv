@@ -49,4 +49,10 @@ if [ ! -d opencv-3.1.0 ]; then
   tar -xf 3.1.0.tar.gz
 fi
 
+download https://github.com/Itseez/opencv/commit/e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
+
+pushd opencv-3.1.0
+patch -p1 --forward < ../e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
+popd
+
 echo "Done. Ready to build OpenCV!"

@@ -70,8 +70,6 @@ CMAKE_PREFIX_PATH="$SYSROOT"/usr/local frcmake \
   "-DPYTHON3_LIBRARY=${PYTHON3_LIBRARY}" \
   "-DPYTHON3_NUMPY_INCLUDE_DIRS=${PYTHON3_NUMPY_INCLUDE_DIRS}" \
   "$CVDIR"
-  
-exit
 
 if which nproc; then
   MAKEARGS="-j `nproc`"
