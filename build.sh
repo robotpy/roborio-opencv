@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/bin/bash -ex
+
+OPENCV_VERSION=3.2.0
+PYTHON_VERSION=3.6
 
 pushd `dirname $0`
 ROOT=`pwd`
@@ -6,14 +9,26 @@ popd
 
 BUILD=`pwd`/build
 SYSROOT="$BUILD"/sysroot
-CVDIR="$ROOT"/opencv-3.1.0
+CVDIR="$ROOT"/opencv-${OPENCV_VERSION}
 
-function unpack_ipk {
+function unpack_download {
   FNAME=$(basename $1)
+  EXT="${FNAME##*.}"
   
-  ar -x "$ROOT"/ipkg/"$FNAME"
-  tar -xf data.tar.gz -C "$SYSROOT"
-  rm data.tar.gz control.tar.gz debian-binary 
+  case "$EXT" in 
+    "ipk")
+      ar -x "$ROOT"/downloads/"$FNAME"
+      tar -xf data.tar.gz -C "$SYSROOT"
+      rm data.tar.gz control.tar.gz debian-binary 
+      ;;
+    "whl")
+      unzip "$ROOT"/downloads/"$FNAME" -d "$PYTHON3_SITE_PACKAGES"
+      ;;
+    *)
+      echo "$FNAME has unknown file type '$EXT' to unpack"
+      exit 1
+      ;;
+  esac
 }
 
 function assert_path {
@@ -36,34 +51,28 @@ pushd build
 [ ! -d sysroot ] || rm -rf sysroot
 mkdir sysroot
 
+PYTHON3_SITE_PACKAGES="$SYSROOT"/usr/local/lib/python${PYTHON_VERSION}/site-packages/
+PYTHON3_INCLUDE_PATH="$SYSROOT"/usr/local/include/python${PYTHON_VERSION}m
+PYTHON3_LIBRARY="$SYSROOT"/usr/local/lib/libpython${PYTHON_VERSION}m.so.1.0
+PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
+
+mkdir -p "$PYTHON3_SITE_PACKAGES"
+echo "$PYTHON3_SITE_PACKAGES"
+
 for dep in `cat "$ROOT"/deps`; do
-  unpack_ipk "$dep"
+  unpack_download "$dep"
 done
-
-PYTHON2_INCLUDE_PATH="$SYSROOT"/usr/local/include/python2.7
-PYTHON2_LIBRARY="$SYSROOT"/usr/local/lib/libpython2.7.so
-PYTHON2_NUMPY_INCLUDE_DIRS="$SYSROOT"/usr/local/lib/python2.7/site-packages/numpy/core/include
-
-PYTHON3_INCLUDE_PATH="$SYSROOT"/usr/local/include/python3.5m
-PYTHON3_LIBRARY="$SYSROOT"/usr/local/lib/libpython3.5m.so.1.0
-PYTHON3_NUMPY_INCLUDE_DIRS="$SYSROOT"/usr/local/lib/python3.5/site-packages/numpy/core/include
-
-assert_path -d "$PYTHON2_INCLUDE_PATH"
-assert_path -f "$PYTHON2_LIBRARY"
-assert_path -d "$PYTHON2_NUMPY_INCLUDE_DIRS"
 
 assert_path -d "$PYTHON3_INCLUDE_PATH"
 assert_path -f "$PYTHON3_LIBRARY"
 assert_path -d "$PYTHON3_NUMPY_INCLUDE_DIRS"
 
 CMAKE_PREFIX_PATH="$SYSROOT"/usr/local frcmake \
+  -DOPENCV_VCSVERSION=${OPENCV_VERSION} -DCMAKE_SYSTEM_PROCESSOR=cortexa9-vfpv3 \
   -DCMAKE_BUILD_TYPE=Release \
   -DENABLE_NEON=ON -DENABLE_VFPV3=ON \
   -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF \
   -DWITH_OPENCL=NO \
-  "-DPYTHON2_INCLUDE_PATH=${PYTHON2_INCLUDE_PATH}" \
-  "-DPYTHON2_LIBRARY=${PYTHON2_LIBRARY}" \
-  "-DPYTHON2_NUMPY_INCLUDE_DIRS=${PYTHON2_NUMPY_INCLUDE_DIRS}" \
   "-DPYTHON3_INCLUDE_PATH=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR2=${PYTHON3_INCLUDE_PATH}" \
@@ -78,6 +87,6 @@ fi
 make $MAKEARGS
 
 cpack -G TGZ
-mv OpenCV-unknown-.tar.gz /vagrant/OpenCV-3.1.0-cortexa9-vfpv3.tar.gz
+mv OpenCV-${OPENCV_VERSION}-.tar.gz /vagrant/OpenCV-${OPENCV_VERSION}-cortexa9-vfpv3.tar.g
 
 popd

@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+OPENCV_VERSION=3.2.0
+
 cd `dirname $0`
 
 function download {
@@ -22,20 +24,30 @@ if ! which frcmake; then
   apt install -y frc-toolchain frcmake
 fi
 
-if ! which javac || ! javac -version 2>&1  | grep 1\\.8; then
-  add-apt-repository ppa:webupd8team/java
-  apt update
-  apt install -y oracle-java8-installer oracle-java8-set-default
+# Note: Java build seems to be broken (needs JNI?), since FIRST provides java
+#       builds I'm not going to spend the time to fix it
+#if ! which javac || ! javac -version 2>&1  | grep 1\\.8; then
+#  add-apt-repository ppa:webupd8team/java
+#  apt update
+#  apt install -y oracle-java8-installer oracle-java8-set-default
+#fi
+
+#if ! which ant; then
+#  apt install -y ant
+#fi
+
+if ! which unzip; then
+  apt install -y unzip
 fi
 
-if ! which ant; then
-  apt install -y ant
+if ! which python; then
+  apt install -y python
 fi
 
 DEPS=`cat deps`
 
-[ -d ipkg ] || mkdir ipkg
-pushd ipkg
+[ -d downloads ] || mkdir downloads
+pushd downloads
 
 for dep in $DEPS; do
   download "$dep"
@@ -43,16 +55,15 @@ done
 
 popd
 
-download https://github.com/Itseez/opencv/archive/3.1.0.tar.gz
+download https://github.com/Itseez/opencv/archive/${OPENCV_VERSION}.tar.gz
 
-if [ ! -d opencv-3.1.0 ]; then
-  tar -xf 3.1.0.tar.gz
+if [ ! -d opencv-${OPENCV_VERSION} ]; then
+  tar -xf ${OPENCV_VERSION}.tar.gz
 fi
 
-download https://github.com/Itseez/opencv/commit/e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
-
-pushd opencv-3.1.0
-patch -p1 --forward < ../e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
-popd
+#download https://github.com/Itseez/opencv/commit/e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
+#pushd opencv-${OPENCV_VERSION}
+#patch -p1 --forward < ../e489f29d0fd8f40683ff7294f4f2060f6bbe0a5e.diff
+#popd
 
 echo "Done. Ready to build OpenCV!"

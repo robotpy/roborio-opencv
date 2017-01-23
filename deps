@@ -1,6 +1,3 @@
-http://www.tortall.net/~robotpy/feeds/2016/python2_2.7.11_cortexa9-vfpv3.ipk
-http://www.tortall.net/~robotpy/feeds/2016/python2-dev_2.7.11_cortexa9-vfpv3.ipk
-http://www.tortall.net/~robotpy/feeds/2016/python3_3.5.1_cortexa9-vfpv3.ipk
-http://www.tortall.net/~robotpy/feeds/2016/python3-dev_3.5.1_cortexa9-vfpv3.ipk
-http://www.tortall.net/~robotpy/feeds/2016/python27-numpy_1.10.2_cortexa9-vfpv3.ipk
-http://www.tortall.net/~robotpy/feeds/2016/python35-numpy_1.10.2_cortexa9-vfpv3.ipk
+http://www.tortall.net/~robotpy/feeds/2017/python36_3.6.0-r1_cortexa9-vfpv3.ipk
+http://www.tortall.net/~robotpy/feeds/2017/python36-dev_3.6.0-r1_cortexa9-vfpv3.ipk
+https://www.tortall.net/~robotpy/wheels/2017/numpy-1.12.0-cp36-cp36m-linux_armv7l.whl

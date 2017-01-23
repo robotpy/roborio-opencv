@@ -1,16 +1,18 @@
-OpenCV 3.1.0 build for RoboRIO
+OpenCV 3.2.0 build for RoboRIO
 ==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
 
 * C++
-* Python 2.7.11
-* Python 3.5.0
-* Java
+* Python 3.6.0
+* ~~Java~~ (currently broken, but FIRST provides that so I'm not going to fix it)
 
 The result of the compilation process is a zipfile that can be turned into IPK
 files using the [roborio-packages](https://github.com/robotpy/roborio-packages)
 repository.
+
+**NOTE**: For 2017, OpenCV 3.1.0 is well-supported for C++ and Java by WPILib,
+so if you're looking to use those languages you should use their stuff instead.
 
 RoboRIO Installation
 ====================
@@ -19,24 +21,20 @@ The easiest way to install these packages is to set up the RobotPy opkg feed
 on your RoboRIO. Create a `.conf` file in `/etc/opkg` (e.g. `/etc/opkg/robotpy.conf`)
 containing the following line:
 
-    src/gz robotpy http://www.tortall.net/~robotpy/feeds/2016
+    src/gz robotpy http://www.tortall.net/~robotpy/feeds/2017
 
 Once the feed is added, issue an `opkg update` and then you can install
 packages using the following commands (requires internet access).
 
-For Python2:
-
-    opkg install python27-opencv3
-    
 For Python3:
 
-    opkg install python35-opencv3
+    opkg install python36-opencv3
 
 For C++:
 
     opkg install opencv3
     
-For Java:
+~~For Java (Java programming support must be installed separately)~~:
 
     opkg install opencv3-java
 
@@ -63,20 +61,11 @@ Usage
 For detailed information about OpenCV, see their [website](http://opencv.org/).
 There's lots of documentation and tutorials/etc available.
 
-Using the C++ and Java bindings
--------------------------------
-
-Download the [latest release](https://github.com/robotpy/roborio-vm/releases)
-and point your compiler at the right bits in the included files.
-
-* For C++ users, [Team 2053 has provided instructions](https://github.com/team2053tigertronics/opencvInstall) that may be useful
-* TODO: document this, create a better release package
-
 Using the Python bindings
 -------------------------
 
-Just develop the code as you normally would, copy the python files over to the
-RoboRIO, and it should just work.
+See the image processing section of the Programmer's Guide at the [RobotPy documentation site](http://robotpy.readthedocs.io)
+for details. 
 
 Building your own version of OpenCV
 ===================================
