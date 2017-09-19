@@ -1,4 +1,4 @@
-OpenCV 3.2.0 build for RoboRIO
+OpenCV 3.3.0 build for RoboRIO
 ==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
@@ -33,7 +33,7 @@ For Python3:
 For C++:
 
     opkg install opencv3
-    
+
 ~~For Java (Java programming support must be installed separately)~~:
 
     opkg install opencv3-java
@@ -45,7 +45,7 @@ You can use the [RobotPy Installer Script](https://github.com/robotpy/robotpy-wp
 to do offline opkg installs. First, download the package:
 
     python3 installer.py download-opkg opencv3
-    
+
 Then, connect to the network with the RoboRIO, and install it:
 
     python3 installer.py install-opkg opencv3
@@ -65,7 +65,7 @@ Using the Python bindings
 -------------------------
 
 See the image processing section of the Programmer's Guide at the [RobotPy documentation site](http://robotpy.readthedocs.io)
-for details. 
+for details.
 
 Building your own version of OpenCV
 ===================================
@@ -89,7 +89,7 @@ following:
 
     sudo ./fetch.sh
     ./build.sh
-    
+
 But... I'd recommend using the VM instead.
 
 Troubleshooting
