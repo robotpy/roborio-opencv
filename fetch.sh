@@ -1,13 +1,13 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=3.2.0
+OPENCV_VERSION=3.3.0
 
 cd `dirname $0`
 
 function download {
   URI="$1"
   FNAME=$(basename $1)
-  
+
   if [ ! -f "$FNAME" ]; then
     wget $URI
   fi
@@ -19,7 +19,7 @@ if ! which apt-add-repository; then
 fi
 
 if ! which frcmake; then
-  apt-add-repository ppa:wpilib/toolchain 
+  apt-add-repository ppa:wpilib/toolchain
   apt update
   apt install -y frc-toolchain frcmake
 fi
@@ -55,7 +55,7 @@ done
 
 popd
 
-download https://github.com/Itseez/opencv/archive/${OPENCV_VERSION}.tar.gz
+download https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
 
 if [ ! -d opencv-${OPENCV_VERSION} ]; then
   tar -xf ${OPENCV_VERSION}.tar.gz

@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-OPENCV_VERSION=3.2.0
+OPENCV_VERSION=3.3.0
 PYTHON_VERSION=3.6
 
 pushd `dirname $0`
@@ -14,15 +14,12 @@ CVDIR="$ROOT"/opencv-${OPENCV_VERSION}
 function unpack_download {
   FNAME=$(basename $1)
   EXT="${FNAME##*.}"
-  
-  case "$EXT" in 
+
+  case "$EXT" in
     "ipk")
       ar -x "$ROOT"/downloads/"$FNAME"
       tar -xf data.tar.gz -C "$SYSROOT"
-      rm data.tar.gz control.tar.gz debian-binary 
-      ;;
-    "whl")
-      unzip "$ROOT"/downloads/"$FNAME" -d "$PYTHON3_SITE_PACKAGES"
+      rm data.tar.gz control.tar.gz debian-binary
       ;;
     *)
       echo "$FNAME has unknown file type '$EXT' to unpack"
@@ -38,10 +35,10 @@ function assert_path {
   fi
 }
 
-if [ -z "$JAVA_HOME" ]; then
-  echo "ERROR: JAVA_HOME not set! (maybe you need to do '. /etc/profile', or logout/login)"
-  exit 1
-fi
+# if [ -z "$JAVA_HOME" ]; then
+#   echo "ERROR: JAVA_HOME not set! (maybe you need to do '. /etc/profile', or logout/login)"
+#   exit 1
+# fi
 
 sed -i 's/arm-linux-gnueabi/arm-frc-linux-gnueabi/g' "$CVDIR"/platforms/linux/arm-gnueabi.toolchain.cmake
 
@@ -87,6 +84,5 @@ fi
 make $MAKEARGS
 
 cpack -G TGZ
-mv OpenCV-${OPENCV_VERSION}-.tar.gz /vagrant/OpenCV-${OPENCV_VERSION}-cortexa9-vfpv3.tar.g
-
+mv OpenCV-${OPENCV_VERSION}-cortexa9-vfpv3.tar.gz ${ROOT}/OpenCV-${OPENCV_VERSION}-cortexa9-vfpv3.tar.gz
 popd
