@@ -1,6 +1,7 @@
+.DS_Store # Mac users
 .vagrant
+build
 downloads
 *.tar.gz
 
-opencv-3.2.0
-
+opencv-*
