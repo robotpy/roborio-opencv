@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=3.3.0
+OPENCV_VERSION=3.3.1
 
 cd `dirname $0`
 
@@ -19,7 +19,7 @@ if ! which apt-add-repository; then
 fi
 
 if ! which frcmake; then
-  apt-add-repository ppa:wpilib/toolchain
+  apt-add-repository ppa:wpilib/toolchain-beta
   apt update
   apt install -y frc-toolchain frcmake
 fi
