@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-OPENCV_VERSION=3.3.1
+OPENCV_VERSION=3.4.0
 PYTHON_VERSION=3.6
 
 pushd `dirname $0`
