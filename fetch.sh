@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=3.4.0
+OPENCV_VERSION=3.4.5
 
 cd `dirname $0`
 
@@ -13,16 +13,16 @@ function download {
   fi
 }
 
-if ! which apt-add-repository; then
-  apt update
-  apt install -y software-properties-common
-fi
+# if ! which apt-add-repository; then
+#   apt update
+#   apt install -y software-properties-common
+# fi
 
-if ! which frcmake; then
-  apt-add-repository ppa:wpilib/toolchain-beta
-  apt update
-  apt install -y frc-toolchain frcmake
-fi
+# if ! which frcmake; then
+#   apt-add-repository ppa:wpilib/toolchain-beta
+#   apt update
+#   apt install -y frc-toolchain frcmake
+# fi
 
 # Note: Java build seems to be broken (needs JNI?), since FIRST provides java
 #       builds I'm not going to spend the time to fix it
@@ -36,13 +36,13 @@ fi
 #  apt install -y ant
 #fi
 
-if ! which unzip; then
-  apt install -y unzip
-fi
+# if ! which unzip; then
+#   apt install -y unzip
+# fi
 
-if ! which python; then
-  apt install -y python
-fi
+# if ! which python; then
+#   apt install -y python
+# fi
 
 DEPS=`cat deps`
 

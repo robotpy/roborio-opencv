@@ -1,17 +1,16 @@
-OpenCV 3.3.0 build for RoboRIO
+OpenCV 3.4.5 build for RoboRIO
 ==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
 
 * C++
-* Python 3.6.0
-* ~~Java~~ (currently broken, but FIRST provides that so I'm not going to fix it)
+* Python 3.7
 
 The result of the compilation process is a zipfile that can be turned into IPK
 files using the [roborio-packages](https://github.com/robotpy/roborio-packages)
 repository.
 
-**NOTE**: For 2017, OpenCV 3.1.0 is well-supported for C++ and Java by WPILib,
+**NOTE**: For 2017+, OpenCV 3.x is well-supported for C++ and Java by WPILib,
 so if you're looking to use those languages you should use their stuff instead.
 
 RoboRIO Installation
@@ -21,14 +20,14 @@ The easiest way to install these packages is to set up the RobotPy opkg feed
 on your RoboRIO. Create a `.conf` file in `/etc/opkg` (e.g. `/etc/opkg/robotpy.conf`)
 containing the following line:
 
-    src/gz robotpy http://www.tortall.net/~robotpy/feeds/2017
+    src/gz robotpy http://www.tortall.net/~robotpy/feeds/2019
 
 Once the feed is added, issue an `opkg update` and then you can install
 packages using the following commands (requires internet access).
 
 For Python3:
 
-    opkg install python36-opencv3
+    opkg install python37-opencv3
 
 For C++:
 
@@ -44,11 +43,11 @@ Offline Installation
 You can use the [RobotPy Installer Script](https://github.com/robotpy/robotpy-wpilib/blob/master/installer/installer.py)
 to do offline opkg installs. First, download the package:
 
-    python3 installer.py download-opkg opencv3
+    python3 installer.py download-opkg python37-opencv3
 
 Then, connect to the network with the RoboRIO, and install it:
 
-    python3 installer.py install-opkg opencv3
+    python3 installer.py install-opkg python37-opencv3
 
 Manual Installation
 -------------------
@@ -71,26 +70,28 @@ Building your own version of OpenCV
 ===================================
 
 You probably just want to use the compiled version on our releases page or from
-our opkg feed. This build has only been tested on Ubuntu 14.04 using the
-included VM configuration.
+our opkg feed. This build has only been tested on Linux using docker as directed
+below.
 
 Build steps
 -----------
 
-First, install [Vagrant](https://www.vagrantup.com/). Then...
+First, install [docker](https://docs.docker.com/). Then run:
 
-    vagrant up
-    vagrant ssh
-    sudo /vagrant/fetch.sh
-    /vagrant/build.sh
+    ./launch.sh
 
-If you're building on your own Linux host, you can probably just execute the
-following:
+This will give you a shell in the docker container. You can then run:
 
-    sudo ./fetch.sh
+    ./fetch.sh
     ./build.sh
 
-But... I'd recommend using the VM instead.
+If you're building on your own Linux host that has cmake and the FRC toolchain
+installed, you can probably just execute the following:
+
+    ./fetch.sh
+    ./build.sh
+
+But... I'd recommend using the docker image instead.
 
 Troubleshooting
 ---------------

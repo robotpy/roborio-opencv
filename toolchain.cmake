@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 2.8)
+set(ARM_PREFIX arm-frc2019-linux-gnueabi)
+
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSROOT /usr/local/${ARM_PREFIX})
+
+set(CMAKE_C_COMPILER ${ARM_PREFIX}-gcc)
+set(CMAKE_CXX_COMPILER ${ARM_PREFIX}-g++)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+include("${CMAKE_CURRENT_LIST_DIR}/opencv-3.4.5/platforms/linux/arm-gnueabi.toolchain.cmake")
