@@ -19,11 +19,11 @@ RoboRIO Installation
 You can use the [RobotPy Installer](https://github.com/robotpy/robotpy-installer)
 to install these packages. First, download the package:
 
-    python3 -m robotpy-installer download-opkg python37-opencv3
+    python3 -m robotpy-installer download-opkg python38-opencv4
 
 Then, connect to the network with the RoboRIO, and install it:
 
-    python3 installer.py install-opkg python37-opencv3
+    python3 installer.py install-opkg python38-opencv4
 
 via opkg
 --------
@@ -36,7 +36,7 @@ First, setup the opkg feed as directed at https://github.com/robotpy/roborio-pac
 Once the feed is added, issue an `opkg update` and then you can install
 packages using the following commands (requires internet access).
 
-    opkg install python38-opencv3
+    opkg install python38-opencv4
 
 Manual Installation
 -------------------
