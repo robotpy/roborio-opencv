@@ -1,7 +1,8 @@
 #!/bin/bash -ex
 
-OPENCV_VERSION=3.4.5
-PYTHON_VERSION=3.7
+OPENCV_VERSION=4.2.0
+PYTHON_VERSION=3.8
+COMPILER=arm-frc2019-linux-gnueabi
 
 pushd `dirname $0`
 ROOT=`pwd`
@@ -41,7 +42,7 @@ function assert_path {
 #   exit 1
 # fi
 
-sed -i 's/arm-linux-gnueabi/arm-frc2019-linux-gnueabi/g' "$CVDIR"/platforms/linux/arm-gnueabi.toolchain.cmake
+sed -i "s/arm-linux-gnueabi/$COMPILER/g" "$CVDIR"/platforms/linux/arm-gnueabi.toolchain.cmake
 
 [ -d build ] || mkdir build
 pushd build
@@ -50,8 +51,8 @@ pushd build
 mkdir sysroot
 
 PYTHON3_SITE_PACKAGES="$SYSROOT"/usr/local/lib/python${PYTHON_VERSION}/site-packages/
-PYTHON3_INCLUDE_PATH="$SYSROOT"/usr/local/include/python${PYTHON_VERSION}m
-PYTHON3_LIBRARY="$SYSROOT"/usr/local/lib/libpython${PYTHON_VERSION}m.so.1.0
+PYTHON3_INCLUDE_PATH="$SYSROOT"/usr/local/include/python${PYTHON_VERSION}
+PYTHON3_LIBRARY="$SYSROOT"/usr/local/lib/libpython${PYTHON_VERSION}.so.1.0
 PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
 
 mkdir -p "$PYTHON3_SITE_PACKAGES"
@@ -73,7 +74,7 @@ CMAKE_PREFIX_PATH="$SYSROOT"/usr/local cmake \
   -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF \
   -DWITH_OPENCL=NO \
   -DOPENCV_SKIP_PYTHON_LOADER=ON \
-  -DOPENCV_PYTHON3_INSTALL_PATH=lib/python3.7/site-packages \
+  -DOPENCV_PYTHON3_INSTALL_PATH=lib/python${PYTHON_VERSION}/site-packages \
   "-DPYTHON3_INCLUDE_PATH=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR2=${PYTHON3_INCLUDE_PATH}" \

@@ -1,10 +1,10 @@
-OpenCV 3.4.5 build for RoboRIO
+OpenCV 4.2.0 build for RoboRIO
 ==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
 
 * C++
-* Python 3.7
+* Python 3.8
 
 The result of the compilation process is a zipfile that can be turned into IPK
 files using the [roborio-packages](https://github.com/robotpy/roborio-packages)
@@ -16,38 +16,27 @@ so if you're looking to use those languages you should use their stuff instead.
 RoboRIO Installation
 ====================
 
-The easiest way to install these packages is to set up the RobotPy opkg feed
-on your RoboRIO. Create a `.conf` file in `/etc/opkg` (e.g. `/etc/opkg/robotpy.conf`)
-containing the following line:
+You can use the [RobotPy Installer](https://github.com/robotpy/robotpy-installer)
+to install these packages. First, download the package:
 
-    src/gz robotpy http://www.tortall.net/~robotpy/feeds/2019
-
-Once the feed is added, issue an `opkg update` and then you can install
-packages using the following commands (requires internet access).
-
-For Python3:
-
-    opkg install python37-opencv3
-
-For C++:
-
-    opkg install opencv3
-
-~~For Java (Java programming support must be installed separately)~~:
-
-    opkg install opencv3-java
-
-Offline Installation
---------------------
-
-You can use the [RobotPy Installer Script](https://github.com/robotpy/robotpy-wpilib/blob/master/installer/installer.py)
-to do offline opkg installs. First, download the package:
-
-    python3 installer.py download-opkg python37-opencv3
+    python3 -m robotpy-installer download-opkg python37-opencv3
 
 Then, connect to the network with the RoboRIO, and install it:
 
     python3 installer.py install-opkg python37-opencv3
+
+via opkg
+--------
+
+Another way to install these packages is to set up the RobotPy opkg feed
+on your RoboRIO.
+
+First, setup the opkg feed as directed at https://github.com/robotpy/roborio-packages
+
+Once the feed is added, issue an `opkg update` and then you can install
+packages using the following commands (requires internet access).
+
+    opkg install python38-opencv3
 
 Manual Installation
 -------------------

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=3.4.5
+OPENCV_VERSION=4.2.0
 
 cd `dirname $0`
 
