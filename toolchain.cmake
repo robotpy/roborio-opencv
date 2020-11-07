@@ -12,4 +12,4 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-include("${CMAKE_CURRENT_LIST_DIR}/opencv-4.2.0/platforms/linux/arm-gnueabi.toolchain.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/opencv-4.5.0/platforms/linux/arm-gnueabi.toolchain.cmake")

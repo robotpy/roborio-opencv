@@ -1,8 +1,10 @@
 #!/bin/bash -ex
 
-OPENCV_VERSION=4.2.0
-PYTHON_VERSION=3.8
-COMPILER=arm-frc2019-linux-gnueabi
+OPENCV_VERSION=4.5.0
+PYTHON_VERSION=3.9
+NUMPY_VERSION=1.19.4
+OPENBLAS_VERSION=0.3.10
+COMPILER=arm-frc2020-linux-gnueabi
 
 pushd `dirname $0`
 ROOT=`pwd`
@@ -47,39 +49,53 @@ sed -i "s/arm-linux-gnueabi/$COMPILER/g" "$CVDIR"/platforms/linux/arm-gnueabi.to
 [ -d build ] || mkdir build
 pushd build
 
-[ ! -d sysroot ] || rm -rf sysroot
-mkdir sysroot
-
-PYTHON3_SITE_PACKAGES="$SYSROOT"/usr/local/lib/python${PYTHON_VERSION}/site-packages/
-PYTHON3_INCLUDE_PATH="$SYSROOT"/usr/local/include/python${PYTHON_VERSION}
-PYTHON3_LIBRARY="$SYSROOT"/usr/local/lib/libpython${PYTHON_VERSION}.so.1.0
+PYTHON3_INCLUDE_PATH=/build/crosspy/include/python${PYTHON_VERSION}
+PYTHON3_SITE_PACKAGES=/build/venv/cross/lib/python${PYTHON_VERSION}/site-packages/
 PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
 
-mkdir -p "$PYTHON3_SITE_PACKAGES"
-echo "$PYTHON3_SITE_PACKAGES"
+OPENBLAS_INCLUDE_DIR=/build/venv/cross/include
+OPENBLAS_LIB=/build/venv/cross/lib
 
-for dep in `cat "$ROOT"/deps`; do
-  unpack_download "$dep"
-done
+/build/venv/bin/cross-python -m pip --disable-pip-version-check install \
+  numpy==${NUMPY_VERSION}
 
 assert_path -d "$PYTHON3_INCLUDE_PATH"
-assert_path -f "$PYTHON3_LIBRARY"
+#assert_path -f "$PYTHON3_LIBRARY"
 assert_path -d "$PYTHON3_NUMPY_INCLUDE_DIRS"
 
-CMAKE_PREFIX_PATH="$SYSROOT"/usr/local cmake \
+CMAKE_PREFIX_PATH=/build/venv/cross cmake \
   -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
   -DOPENCV_VCSVERSION=${OPENCV_VERSION} \
   -DCMAKE_BUILD_TYPE=Release \
+  -DWITH_CUDA=OFF \
+  -DWITH_IPP=OFF \
+  -DWITH_ITT=OFF \
+  -DWITH_OPENCL=NO \
+  -DWITH_FFMPEG=OFF \
+  -DWITH_OPENEXR=OFF \
+  -DWITH_GSTREAMER=OFF \
+  -DWITH_GTK=OFF \
+  -DWITH_1394=OFF \
+  -DWITH_JASPER=OFF \
+  -DWITH_TIFF=OFF \
+  -DWITH_WEBP=OFF \
+  -DWITH_PROTOBUF=OFF \
+  \
+  -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_ZLIB=ON \
+  \
   -DOPENCV_GENERATE_PKGCONFIG=ON \
   -DENABLE_NEON=ON -DENABLE_VFPV3=ON \
+  \
+  -DBUILD_opencv_apps=OFF \
   -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF \
-  -DWITH_OPENCL=NO \
+  \
   -DOPENCV_SKIP_PYTHON_LOADER=ON \
   -DOPENCV_PYTHON3_INSTALL_PATH=lib/python${PYTHON_VERSION}/site-packages \
+  -DBUILD_opencv_python2=OFF \
+  -DBUILD_opencv_python3=ON \
   "-DPYTHON3_INCLUDE_PATH=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR=${PYTHON3_INCLUDE_PATH}" \
   "-DPYTHON3_INCLUDE_DIR2=${PYTHON3_INCLUDE_PATH}" \
-  "-DPYTHON3_LIBRARY=${PYTHON3_LIBRARY}" \
   "-DPYTHON3_NUMPY_INCLUDE_DIRS=${PYTHON3_NUMPY_INCLUDE_DIRS}" \
   "$CVDIR"
 

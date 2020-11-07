@@ -1,3 +1,7 @@
 #!/bin/bash
 
-docker run --hostname roborio-opencv --rm -it -v $(pwd):/build:Z -w /build wpilib/roborio-cross-ubuntu:2020-18.04 /bin/bash
+docker run \
+    --rm -it -v $(pwd):/build/opencv:Z \
+    --hostname roborio-opencv \
+    -w /build/opencv \
+    robotpy/roborio-cross-ubuntu:2021.1 /bin/bash

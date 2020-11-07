@@ -1,10 +1,10 @@
-OpenCV 4.2.0 build for RoboRIO
+OpenCV 4.5.0 build for RoboRIO
 ==============================
 
 This is a set of scripts that will build OpenCV for the RoboRIO with bindings for:
 
 * C++
-* Python 3.8
+* Python 3.9
 
 The result of the compilation process is a zipfile that can be turned into IPK
 files using the [roborio-packages](https://github.com/robotpy/roborio-packages)
