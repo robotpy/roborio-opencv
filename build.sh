@@ -1,36 +1,17 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
-OPENCV_VERSION=4.5.1
-PYTHON_VERSION=3.9
-NUMPY_VERSION=1.19.5
-OPENBLAS_VERSION=0.3.10
-COMPILER=arm-frc2020-linux-gnueabi
+OPENCV_VERSION=4.5.5
+PYTHON_VERSION=$(/build/venv/bin/cross-python -c 'import sys; print("%d.%d" % sys.version_info[:2])')
+COMPILER=arm-frc2022-linux-gnueabi
 
 pushd `dirname $0`
 ROOT=`pwd`
 popd
 
 BUILD=`pwd`/build
-SYSROOT="$BUILD"/sysroot
 CMAKE_TOOLCHAIN_FILE=$(pwd)/toolchain.cmake
 CVDIR="$ROOT"/opencv-${OPENCV_VERSION}
 
-function unpack_download {
-  FNAME=$(basename $1)
-  EXT="${FNAME##*.}"
-
-  case "$EXT" in
-    "ipk")
-      ar -x "$ROOT"/downloads/"$FNAME"
-      tar -xf data.tar.gz -C "$SYSROOT"
-      rm data.tar.gz control.tar.gz debian-binary
-      ;;
-    *)
-      echo "$FNAME has unknown file type '$EXT' to unpack"
-      exit 1
-      ;;
-  esac
-}
 
 function assert_path {
   if [ ! $1 "$2" ]; then
@@ -38,11 +19,6 @@ function assert_path {
     exit 1
   fi
 }
-
-# if [ -z "$JAVA_HOME" ]; then
-#   echo "ERROR: JAVA_HOME not set! (maybe you need to do '. /etc/profile', or logout/login)"
-#   exit 1
-# fi
 
 sed -i "s/arm-linux-gnueabi/$COMPILER/g" "$CVDIR"/platforms/linux/arm-gnueabi.toolchain.cmake
 
@@ -56,8 +32,7 @@ PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
 OPENBLAS_INCLUDE_DIR=/build/venv/cross/include
 OPENBLAS_LIB=/build/venv/cross/lib
 
-/build/venv/bin/cross-python -m pip --disable-pip-version-check install \
-  numpy==${NUMPY_VERSION}
+/build/venv/bin/cross-python -m pip --disable-pip-version-check install --prefer-binary numpy
 
 assert_path -d "$PYTHON3_INCLUDE_PATH"
 #assert_path -f "$PYTHON3_LIBRARY"
@@ -107,5 +82,5 @@ fi
 make $MAKEARGS
 
 cpack -G TGZ
-mv OpenCV-${OPENCV_VERSION}-arm.tar.gz ${ROOT}/OpenCV-${OPENCV_VERSION}-cortexa9-vfpv3.tar.gz
+mv OpenCV-${OPENCV_VERSION}-arm.tar.gz ${ROOT}/OpenCV-${OPENCV_VERSION}-arm.tar.gz
 popd

@@ -1,0 +1,34 @@
+---
+name: dist
+
+on: [push]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    container:
+      image: robotpy/roborio-cross-ubuntu:2022.2
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install build dependencies
+      run: |
+        apt-get update
+        apt-get install -y cmake --no-install-recommends
+        pip3.10 install -r requirements.txt
+
+    - name: Build wheels
+      run: make package
+
+    - if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: robotpy/github-action-scp@atomic
+      with:
+        local: dist
+        remote: public_html/2022/roborio
+        host: narya.tortall.net
+        username: ${{ secrets.SSH_USER }}
+        privateKey: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        atomicPut: true

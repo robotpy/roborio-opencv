@@ -5,3 +5,8 @@ downloads
 *.tar.gz
 
 opencv-*
+
+/data
+/devdata
+/coredata
+/dist
