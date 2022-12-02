@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: robotpy/roborio-cross-ubuntu:2022.2
+      image: robotpy/roborio-cross-ubuntu:2023.1
 
     steps:
     - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
       run: |
         apt-get update
         apt-get install -y cmake --no-install-recommends
-        pip3.10 install -r requirements.txt
+        pip3.11 install -r requirements.txt
 
     - name: Build wheels
       run: make package
@@ -26,7 +26,7 @@ jobs:
       uses: robotpy/github-action-scp@atomic
       with:
         local: dist
-        remote: public_html/2022/roborio
+        remote: public_html/2023/roborio
         host: narya.tortall.net
         username: ${{ secrets.SSH_USER }}
         privateKey: ${{ secrets.SSH_KEY }}

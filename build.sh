@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=4.5.5
+OPENCV_VERSION=4.6.0
 PYTHON_VERSION=$(/build/venv/bin/cross-python -c 'import sys; print("%d.%d" % sys.version_info[:2])')
-COMPILER=arm-frc2022-linux-gnueabi
+COMPILER=arm-frc2023-linux-gnueabi
 
 pushd `dirname $0`
 ROOT=`pwd`
@@ -29,8 +29,17 @@ PYTHON3_INCLUDE_PATH=/build/crosspy/include/python${PYTHON_VERSION}
 PYTHON3_SITE_PACKAGES=/build/venv/cross/lib/python${PYTHON_VERSION}/site-packages/
 PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
 
-OPENBLAS_INCLUDE_DIR=/build/venv/cross/include
-OPENBLAS_LIB=/build/venv/cross/lib
+# Tried to compile with OpenBLAS support but cmake is weird..
+#
+# OPENBLAS_INCLUDE_DIR=/build/venv/cross/include
+# OPENBLAS_LIB_DIR=/build/venv/cross/lib
+#   -DWITH_LAPACK=ON \
+#   -DLAPACK_INCLUDE_DIR=${OPENBLAS_INCLUDE_DIR} \
+#   -DLAPACK_LINK_LIBRARIES=${OPENBLAS_LIB_DIR} \
+#   -DLAPACK_CBLAS_H=cblas.h \
+#   -DLAPACK_LAPACKE_H=lapacke.h \
+#   -DLAPACK_LIBRARIES=openblas \
+#   -DLAPACK_IMPL=OpenBLAS \
 
 /build/venv/bin/cross-python -m pip --disable-pip-version-check install --prefer-binary numpy
 
@@ -60,7 +69,7 @@ CMAKE_PREFIX_PATH=/build/venv/cross cmake \
   -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_ZLIB=ON \
   \
   -DOPENCV_GENERATE_PKGCONFIG=ON \
-  -DENABLE_NEON=ON -DENABLE_VFPV3=ON \
+  -DENABLE_NEON=ON -DENABLE_VFPV3=ON -DSOFTFP=ON \
   \
   -DBUILD_opencv_apps=OFF \
   -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF \

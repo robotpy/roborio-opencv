@@ -1,6 +1,6 @@
 
-PYVERSION = 3.10
-VERSION = 4.5.5
+PYVERSION = 3.11
+VERSION = 4.6.0
 
 DOWNLOAD_FROM = https://github.com/opencv/opencv/archive/${VERSION}.tar.gz
 LIBGZIP = $(abspath $(notdir ${DOWNLOAD_FROM}))
