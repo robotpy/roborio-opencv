@@ -26,7 +26,7 @@ package: ${BUILT_TGZ}
 	# create release package
 	mkdir -p coredata/usr/local/lib
 	xtar -xf ${BUILT_TGZ} -C coredata/usr/local --strip=1 \
-		'*/lib/lib*so.405' \
+		'*/lib/lib*so.406' \
 		'*/share/opencv4/haarcascades/*.xml' \
 		'*/share/opencv4/lbpcascades/*.xml'
 	roborio-gen-whl data-core.py coredata -o dist
