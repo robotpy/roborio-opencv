@@ -8,27 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: robotpy/roborio-cross-ubuntu:2023.1
+      image: wpilib/roborio-cross-ubuntu:2024-22.04-py312
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install build dependencies
       run: |
         apt-get update
         apt-get install -y cmake --no-install-recommends
-        pip3.11 install -r requirements.txt
+        pip3.12 install -r requirements.txt
 
     - name: Build wheels
       run: make package
 
-    - if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-      uses: robotpy/github-action-scp@atomic
+    - name: Publish package to WPILib artifactory
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        local: dist
-        remote: public_html/2023/roborio
-        host: narya.tortall.net
-        username: ${{ secrets.SSH_USER }}
-        privateKey: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        atomicPut: true
+        user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
+        password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
+        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/wpilib-python-release-2024-local

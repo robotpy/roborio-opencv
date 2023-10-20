@@ -1,6 +1,6 @@
 
-PYVERSION = 3.11
-VERSION = 4.6.0
+PYVERSION = 3.12
+VERSION = 4.8.0
 
 DOWNLOAD_FROM = https://github.com/opencv/opencv/archive/${VERSION}.tar.gz
 LIBGZIP = $(abspath $(notdir ${DOWNLOAD_FROM}))
@@ -26,7 +26,7 @@ package: ${BUILT_TGZ}
 	# create release package
 	mkdir -p coredata/usr/local/lib
 	xtar -xf ${BUILT_TGZ} -C coredata/usr/local --strip=1 \
-		'*/lib/lib*so.406' \
+		'*/lib/lib*so.408' \
 		'*/share/opencv4/haarcascades/*.xml' \
 		'*/share/opencv4/lbpcascades/*.xml'
 	roborio-gen-whl data-core.py coredata -o dist
