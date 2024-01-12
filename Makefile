@@ -29,7 +29,7 @@ package: ${BUILT_TGZ}
 		'*/lib/lib*so.408' \
 		'*/share/opencv4/haarcascades/*.xml' \
 		'*/share/opencv4/lbpcascades/*.xml'
-	roborio-gen-whl data-core.py coredata -o dist
+	roborio-gen-whl data-core.py coredata -o dist --strip arm-frc2024-linux-gnueabi-strip
 
 	# create dev package
 	mkdir -p devdata/usr/local/lib
@@ -44,4 +44,4 @@ package: ${BUILT_TGZ}
 	mkdir -p data/usr/local/lib/python$(PYVERSION)/site-packages
 	xtar -xf ${BUILT_TGZ} -C data/usr/local/lib/python$(PYVERSION)/site-packages --strip=4 \
 		'*/lib/python$(PYVERSION)/site-packages/cv2*.so'
-	roborio-gen-whl data-py.py data -o dist
+	roborio-gen-whl data-py.py data -o dist --strip arm-frc2024-linux-gnueabi-strip
