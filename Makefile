@@ -1,5 +1,5 @@
 
-PYVERSION = 3.12
+PYVERSION = 3.13
 VERSION = 4.8.0
 
 DOWNLOAD_FROM = https://github.com/opencv/opencv/archive/${VERSION}.tar.gz
