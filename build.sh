@@ -27,7 +27,7 @@ pushd build
 
 PYTHON3_INCLUDE_PATH=/build/crosspy/include/python${PYTHON_VERSION}
 PYTHON3_SITE_PACKAGES=/build/venv/cross/lib/python${PYTHON_VERSION}/site-packages/
-PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/core/include
+PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/_core/include
 
 # Tried to compile with OpenBLAS support but cmake is weird..
 #
