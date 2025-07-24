@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=4.8.0
+OPENCV_VERSION=4.10.0
 PYTHON_VERSION=$(/build/venv/bin/cross-python -c 'import sys; print("%d.%d" % sys.version_info[:2])')
-COMPILER=arm-frc2024-linux-gnueabi
+COMPILER=aarch64-bookworm-linux-gnu
 
 pushd `dirname $0`
 ROOT=`pwd`
@@ -20,14 +20,14 @@ function assert_path {
   fi
 }
 
-sed -i "s/arm-linux-gnueabi/$COMPILER/g" "$CVDIR"/platforms/linux/arm-gnueabi.toolchain.cmake
+sed -i "s/aarch64-linux-gnu/$COMPILER/g" "$CVDIR"/platforms/linux/aarch64-gnu.toolchain.cmake
 
 [ -d build ] || mkdir build
 pushd build
 
 PYTHON3_INCLUDE_PATH=/build/crosspy/include/python${PYTHON_VERSION}
 PYTHON3_SITE_PACKAGES=/build/venv/cross/lib/python${PYTHON_VERSION}/site-packages/
-PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/_core/include
+PYTHON3_NUMPY_INCLUDE_DIRS="$BUILD"/numpy/_core/include
 
 # Tried to compile with OpenBLAS support but cmake is weird..
 #
@@ -41,7 +41,8 @@ PYTHON3_NUMPY_INCLUDE_DIRS="$PYTHON3_SITE_PACKAGES"/numpy/_core/include
 #   -DLAPACK_LIBRARIES=openblas \
 #   -DLAPACK_IMPL=OpenBLAS \
 
-/build/venv/bin/cross-python -m pip --disable-pip-version-check install --prefer-binary numpy
+/build/venv/bin/build-python -m pip download --platform=manylinux_2_28_aarch64 --only-binary=:all: numpy==2.3.1
+unzip numpy*.whl
 
 assert_path -d "$PYTHON3_INCLUDE_PATH"
 #assert_path -f "$PYTHON3_LIBRARY"
@@ -55,10 +56,11 @@ CMAKE_PREFIX_PATH=/build/venv/cross cmake \
   -DWITH_CUDA=OFF \
   -DWITH_IPP=OFF \
   -DWITH_ITT=OFF \
-  -DWITH_OPENCL=NO \
+  -DWITH_OPENCL=OFF \
   -DWITH_FFMPEG=OFF \
   -DWITH_OPENEXR=OFF \
   -DWITH_GSTREAMER=OFF \
+  -DWITH_LAPACK=OFF \
   -DWITH_GTK=OFF \
   -DWITH_1394=OFF \
   -DWITH_JASPER=OFF \
@@ -69,7 +71,7 @@ CMAKE_PREFIX_PATH=/build/venv/cross cmake \
   -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_ZLIB=ON \
   \
   -DOPENCV_GENERATE_PKGCONFIG=ON \
-  -DENABLE_NEON=ON -DENABLE_VFPV3=ON -DSOFTFP=ON \
+  -DENABLE_CXX11=ON \
   \
   -DBUILD_opencv_apps=OFF \
   -DBUILD_DOCS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF \
@@ -91,5 +93,5 @@ fi
 make $MAKEARGS
 
 cpack -G TGZ
-mv OpenCV-${OPENCV_VERSION}-arm.tar.gz ${ROOT}/OpenCV-${OPENCV_VERSION}-arm.tar.gz
+mv OpenCV-${OPENCV_VERSION}-aarch64.tar.gz ${ROOT}/OpenCV-${OPENCV_VERSION}-aarch64.tar.gz
 popd

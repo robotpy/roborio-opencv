@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-set(ARM_PREFIX arm-frc2024-linux-gnueabi)
+set(ARM_PREFIX aarch64-bookworm-linux-gnu)
 
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
@@ -13,4 +13,4 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-include("${CMAKE_CURRENT_LIST_DIR}/opencv-4.8.0/platforms/linux/arm-gnueabi.toolchain.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/opencv-4.10.0/platforms/linux/aarch64-gnu.toolchain.cmake")
