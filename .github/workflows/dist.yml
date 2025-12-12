@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: wpilib/roborio-cross-ubuntu:2025-22.04-py313
+      image: wpilib/roborio-cross-ubuntu:2026-22.04-py314
 
     steps:
     - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
       run: |
         apt-get update
         apt-get install -y cmake --no-install-recommends
-        pip3.13 install -r requirements.txt
+        pip3.14 install -r requirements.txt
 
     - name: Build wheels
       run: make package
@@ -28,4 +28,4 @@ jobs:
       with:
         user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
         password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
-        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/wpilib-python-release-2025-local
+        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/wpilib-python-release-2026-local

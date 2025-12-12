@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-OPENCV_VERSION=4.8.0
+OPENCV_VERSION=4.12.0
 PYTHON_VERSION=$(/build/venv/bin/cross-python -c 'import sys; print("%d.%d" % sys.version_info[:2])')
-COMPILER=arm-frc2024-linux-gnueabi
+COMPILER=arm-frc2025-linux-gnueabi
 
 pushd `dirname $0`
 ROOT=`pwd`

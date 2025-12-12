@@ -1,6 +1,6 @@
 
-PYVERSION = 3.13
-VERSION = 4.8.0
+PYVERSION = 3.14
+VERSION = 4.12.0
 
 DOWNLOAD_FROM = https://github.com/opencv/opencv/archive/${VERSION}.tar.gz
 LIBGZIP = $(abspath $(notdir ${DOWNLOAD_FROM}))
@@ -26,10 +26,10 @@ package: ${BUILT_TGZ}
 	# create release package
 	mkdir -p coredata/usr/local/lib
 	xtar -xf ${BUILT_TGZ} -C coredata/usr/local --strip=1 \
-		'*/lib/lib*so.408' \
+		'*/lib/lib*so.412' \
 		'*/share/opencv4/haarcascades/*.xml' \
 		'*/share/opencv4/lbpcascades/*.xml'
-	roborio-gen-whl data-core.py coredata -o dist --strip arm-frc2024-linux-gnueabi-strip
+	roborio-gen-whl data-core.py coredata -o dist --strip arm-frc2025-linux-gnueabi-strip
 
 	# create dev package
 	mkdir -p devdata/usr/local/lib
@@ -44,4 +44,4 @@ package: ${BUILT_TGZ}
 	mkdir -p data/usr/local/lib/python$(PYVERSION)/site-packages
 	xtar -xf ${BUILT_TGZ} -C data/usr/local/lib/python$(PYVERSION)/site-packages --strip=4 \
 		'*/lib/python$(PYVERSION)/site-packages/cv2*.so'
-	roborio-gen-whl data-py.py data -o dist --strip arm-frc2024-linux-gnueabi-strip
+	roborio-gen-whl data-py.py data -o dist --strip arm-frc2025-linux-gnueabi-strip
